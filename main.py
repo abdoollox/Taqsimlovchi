@@ -21,6 +21,7 @@ GRYFFINDOR_ID = "AgACAgIAAxkBA..." # Gryffindor gerbi ID si
 SLYTHERIN_ID = "AgACAgIAAxkBA..."  # Slytherin gerbi ID si
 RAVENCLAW_ID = "AgACAgIAAxkBA..."  # Ravenclaw gerbi ID si
 HUFFLEPUFF_ID = "AgACAgIAAxkBA..."  # Hufflepuff gerbi ID si
+SORTING_TOPIC_ID = None # Agar guruhda topic bo'lmasa None, bo'lsa raqamini yozing
 
 # Faqat shundan keyingina HOUSES lug'ati kelishi kerak
 HOUSES = {
@@ -99,5 +100,6 @@ if __name__ == "__main__":
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
         logging.error("Bot to'xtadi!")
+
 
 
