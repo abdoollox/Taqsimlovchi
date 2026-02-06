@@ -16,11 +16,12 @@ bot = Bot(token=API_TOKEN)
 dp = Dispatcher()
 
 # --- RASM ID LARINI SHU YERGA YOZING ---
-HAT_IMG_ID = "AgACAgIAAxkBA..." # Shlyapa rasmi ID si
-GRYFFINDOR_ID = "AgACAgIAAxkBA..." # Gryffindor gerbi ID si
-SLYTHERIN_ID = "AgACAgIAAxkBA..."  # Slytherin gerbi ID si
-RAVENCLAW_ID = "AgACAgIAAxkBA..."  # Ravenclaw gerbi ID si
-HUFFLEPUFF_ID = "AgACAgIAAxkBA..."  # Hufflepuff gerbi ID si
+HAT_IMG_ID = "https://static.wikia.nocookie.net/harrypotter/images/6/62/Sorting_Hat.png" 
+GRYFFINDOR_ID = "https://static.wikia.nocookie.net/harrypotter/images/b/b1/Gryffindor_ClearBG.png"
+SLYTHERIN_ID = "https://static.wikia.nocookie.net/harrypotter/images/0/00/Slytherin_ClearBG.png"
+RAVENCLAW_ID = "https://static.wikia.nocookie.net/harrypotter/images/4/4e/RavenclawCrest.png"
+HUFFLEPUFF_ID = "https://static.wikia.nocookie.net/harrypotter/images/0/06/Hufflepuff_ClearBG.png"
+
 SORTING_TOPIC_ID = None # Agar guruhda topic bo'lmasa None, bo'lsa raqamini yozing
 
 # Faqat shundan keyingina HOUSES lug'ati kelishi kerak
@@ -100,6 +101,7 @@ if __name__ == "__main__":
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
         logging.error("Bot to'xtadi!")
+
 
 
 
