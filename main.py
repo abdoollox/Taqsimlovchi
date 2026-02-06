@@ -64,7 +64,7 @@ async def welcome_new_member(message: types.Message):
         # O'ZGARISH: Ismni havola (link) ichiga oldik va HTML formatladik
         caption_text = f"🧙‍♂️ <b>Xush kelibsiz, <a href='tg://user?id={user.id}'>{user.first_name}</a>!</b>\n\nSizni fakultetga taqsimlashimiz kerak."
         
-        tugma = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="🎩 Qalpoqni kiyish", callback_data=f"wear_hat_{user.id}")]])
+        tugma = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="🧙 Qalpoqni kiyish", callback_data=f"wear_hat_{user.id}")]])
         
         await bot.send_photo(
             chat_id=message.chat.id, 
@@ -112,6 +112,7 @@ if __name__ == "__main__":
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
         logging.error("Bot to'xtadi!")
+
 
 
 
