@@ -158,10 +158,19 @@ async def sorting_hat_process(callback: types.CallbackQuery):
         parse_mode="HTML"
     )
 
-# --- STATISTIKA (RO'YXAT) ---
+# --- STATISTIKA (RO'YXAT) - FAQAT ADMINLAR UCHUN ---
 @dp.message(Command("statistika"))
 async def show_statistics(message: types.Message):
-    # 1. Ma'lumotlarni yig'amiz
+    # 1. ADMINLIKNI TEKSHIRISH
+    # Foydalanuvchining guruhdagi statusini olamiz
+    member = await bot.get_chat_member(message.chat.id, message.from_user.id)
+    
+    # Agar status 'administrator' yoki 'creator' bo'lmasa, kod shu yerda to'xtaydi
+    if member.status not in ['administrator', 'creator']:
+        await message.reply("⛔️ <b>Bu buyruq faqat guruh adminlari uchun!</b>", parse_mode="HTML")
+        return
+
+    # 2. Ma'lumotlarni yig'amiz (Agar admin bo'lsa, kod davom etadi)
     stats = {
         "Gryffindor": [],
         "Slytherin": [],
@@ -174,7 +183,7 @@ async def show_statistics(message: types.Message):
         if h_name in stats:
             stats[h_name].append(info["mention"])
             
-    # 2. Chiroyli matn tuzamiz
+    # 3. Chiroyli matn tuzamiz
     text = "📜 <b>HOGWARTS O'QUVCHILARI RO'YXATI:</b>\n\n"
     
     # Gryffindor
@@ -213,6 +222,7 @@ if __name__ == "__main__":
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
         logging.error("Bot to'xtadi!")
+
 
 
 
