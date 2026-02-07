@@ -160,41 +160,60 @@ async def delete_left_message(message: types.Message):
     except Exception as e:
         logging.warning(f"Chiqish xabarini o'chirolmadim: {e}")
 
-# --- TAQSIMLASH JARAYONI ---
+# --- TAQSIMLASH JARAYONI (ANIMATSIYA BILAN) ---
 @dp.callback_query(F.data.startswith("wear_hat_"))
 async def sorting_hat_process(callback: types.CallbackQuery):
     target_id = int(callback.data.split("_")[2])
     
+    # Birovning o'rniga bosib yuborishni oldini olish
     if callback.from_user.id != target_id:
         await callback.answer("Bu siz uchun emas! ✋", show_alert=True)
         return
     
-    await callback.answer("Hmm... O'ylayapman...")
+    # 1-QADAM: "O'ylash" jarayonini boshlaymiz
+    await callback.answer() # Soat aylanib turmasligi uchun darrov javob beramiz
     
+    try:
+        # Xabarni tahrirlaymiz: 1-bosqich
+        await callback.message.edit_caption(
+            caption="🤔 <b>Hmm... Qiyin masala... Juda qiyin...</b>",
+            parse_mode="HTML"
+        )
+        await asyncio.sleep(2) # 2 soniya kutamiz
+        
+        # Xabarni tahrirlaymiz: 2-bosqich
+        await callback.message.edit_caption(
+            caption="🧐 <b>Aql bor... Jasorat ham yetarli...\nIste'dod ham yo'q emas...\n\nXo'sh, qayerga joylashtirsam ekan?</b>",
+            parse_mode="HTML"
+        )
+        await asyncio.sleep(3) # Yana 3 soniya kutamiz (Jami 5 soniya)
+        
+    except Exception as e:
+        # Agar xabarni o'zgartirishda xato bo'lsa (masalan, user o'chirib yuborsa), shunchaki davom etamiz
+        pass
+
+    # 2-QADAM: Fakultetni aniqlash va saqlash
     house_name = random.choice(list(HOUSES.keys()))
     house_data = HOUSES[house_name]
+    
     USER_HOUSES[target_id] = {
         "house": house_name,
         "name": callback.from_user.first_name,
         "mention": f"<a href='tg://user?id={target_id}'>{callback.from_user.first_name}</a>"
     }
+    save_data(USER_HOUSES) # Bazaga yozamiz
     
-    # MUHIM: Har safar o'zgarish bo'lganda faylga yozib qo'yamiz!
-    save_data(USER_HOUSES)
-    
+    # 3-QADAM: Eski xabarni o'chiramiz va Natijani chiqarimiz
     await callback.message.delete()
     
-    # Ismni MENTION (bosiladigan ko'k yozuv) qilish
     user_mention = f"<a href='tg://user?id={callback.from_user.id}'>{callback.from_user.first_name}</a>"
-    
-    # HOUSES lug'atidagi {mention} so'zini haqiqiy ismga almashtiramiz
     final_caption = house_data['desc'].format(mention=user_mention)
     
     await bot.send_photo(
         chat_id=callback.message.chat.id,
         message_thread_id=SORTING_TOPIC_ID,
         photo=house_data['id'],
-        caption=final_caption, # Ortiqcha so'zlarsiz, faqat tayyor matn
+        caption=final_caption,
         parse_mode="HTML"
     )
 
@@ -262,6 +281,7 @@ if __name__ == "__main__":
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
         logging.error("Bot to'xtadi!")
+
 
 
 
