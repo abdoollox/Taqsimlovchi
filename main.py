@@ -205,15 +205,26 @@ async def sorting_hat_process(callback: types.CallbackQuery):
         caption=final_caption,
         parse_mode="HTML"
     )
-# --- STATISTIKA (RO'YXAT) - FAQAT ADMINLAR UCHUN ---
+# --- STATISTIKA (RO'YXAT) - ANONIM ADMINLARNI HAM QO'LLAB-QUVVATLAYDI ---
 @dp.message(Command("statistika"))
 async def show_statistics(message: types.Message):
-    # 1. ADMINLIKNI TEKSHIRISH
-    # Foydalanuvchining guruhdagi statusini olamiz
-    member = await bot.get_chat_member(message.chat.id, message.from_user.id)
-    
-    # Agar status 'administrator' yoki 'creator' bo'lmasa, kod shu yerda to'xtaydi
-    if member.status not in ['administrator', 'creator']:
+    is_admin = False
+
+    # 1-TEKSHIRUV: Agar Anonim Admin bo'lsa (GroupAnonymousBot ID: 1087968824)
+    # Yoki xabar to'g'ridan-to'g'ri kanal/guruh nomidan yozilgan bo'lsa
+    if message.from_user.id == 1087968824 or (message.sender_chat and message.sender_chat.id == message.chat.id):
+        is_admin = True
+    else:
+        # 2-TEKSHIRUV: Oddiy admin yoki Creator ekanligini tekshiramiz
+        try:
+            member = await bot.get_chat_member(message.chat.id, message.from_user.id)
+            if member.status in ['administrator', 'creator']:
+                is_admin = True
+        except:
+            pass
+
+    # Agar admin bo'lmasa, to'xtatamiz
+    if not is_admin:
         await message.reply("⛔️ <b>Bu buyruq faqat Hogwarts direktori uchun!</b>", parse_mode="HTML")
         return
 
@@ -269,6 +280,7 @@ if __name__ == "__main__":
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
         logging.error("Bot to'xtadi!")
+
 
 
 
